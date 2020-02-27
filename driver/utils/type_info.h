@@ -1079,9 +1079,9 @@ namespace value_manip {
                 if constexpr (std::is_convertible_v<SourceType, DestinationType>) {
                     dest = src;
                 }
-                else {
-                    convert_via_proxy<std::string>(src, dest);
-                }
+//                else {
+//                    convert_via_proxy<std::string>(src, dest);
+//                }
             }
         };
     };
@@ -1173,9 +1173,9 @@ namespace value_manip {
                 if constexpr (std::is_convertible_v<SourceType, DestinationType>) {
                     dest = src;
                 }
-                else {
-                    convert_via_proxy<std::string>(src, dest);
-                }
+//                else {
+//                    convert_via_proxy<std::string>(src, dest);
+//                }
             }
         };
     };
@@ -1267,9 +1267,9 @@ namespace value_manip {
                 if constexpr (std::is_convertible_v<SourceType, DestinationType>) {
                     dest = src;
                 }
-                else {
-                    convert_via_proxy<std::string>(src, dest);
-                }
+//                else {
+//                    convert_via_proxy<std::string>(src, dest);
+//                }
             }
         };
     };
@@ -1293,9 +1293,9 @@ namespace value_manip {
                 if constexpr (std::is_convertible_v<SourceType, DestinationType>) {
                     dest = src;
                 }
-                else {
-                    convert_via_proxy<std::string>(src, dest);
-                }
+//                else {
+//                    convert_via_proxy<std::string>(src, dest);
+//                }
             }
         };
     };
@@ -1315,9 +1315,9 @@ namespace value_manip {
 
         template <typename DestinationType>
         struct to_value {
-            static inline void convert(const SourceType & src, DestinationType & dest) {
-                convert_via_proxy<std::string>(src, dest);
-            }
+//            static inline void convert(const SourceType & src, DestinationType & dest) {
+//                convert_via_proxy<std::string>(src, dest);
+//            }
         };
     };
 
@@ -1336,9 +1336,9 @@ namespace value_manip {
 
         template <typename DestinationType>
         struct to_value {
-            static inline void convert(const SourceType & src, DestinationType & dest) {
-                convert_via_proxy<std::string>(src, dest);
-            }
+//            static inline void convert(const SourceType & src, DestinationType & dest) {
+//                convert_via_proxy<std::string>(src, dest);
+//            }
         };
     };
 
