@@ -638,8 +638,17 @@ namespace value_manip {
     struct from_value<std::string>::to_value<std::string> {
         using DestinationType = std::string;
 
-        static inline void convert(const SourceType & src, DestinationType & dest) {
-            dest = src;
+//        Prevent copying std::string
+//        static inline void convert(const SourceType & src, DestinationType & dest) {
+//            dest = src;
+//        }
+
+        static inline void convert(SourceType && src, DestinationType & dest) {
+            dest = std::move(src);
+        }
+
+        static inline void convert(SourceType & src, DestinationType & dest) {
+            dest = std::move(src);
         }
     };
 
@@ -1555,6 +1564,13 @@ namespace value_manip {
             static inline void convert(const SourceType & src, DestinationType & dest) {
                 return from_value<decltype(src.value)>::template to_value<DestinationType>::convert(src.value, dest);
             }
+            // Allow further optimizations down the road by stealing value from `src` with either move() or swap().
+            static inline void convert(SourceType & src, DestinationType & dest) {
+                return from_value<decltype(src.value)>::template to_value<DestinationType>::convert(src.value, dest);
+            }
+            static inline void convert(SourceType && src, DestinationType & dest) {
+                return from_value<decltype(src.value)>::template to_value<DestinationType>::convert(src.value, dest);
+            }
         };
     };
 
@@ -1860,7 +1876,7 @@ namespace value_manip {
                     switch (*ind_ptr) {
                         case 0:
                         case SQL_NTS: {
-                            const auto src_obj = toUTF8(cstr);
+                            auto src_obj = toUTF8(cstr);
                             ::value_manip::from_value<std::string>::template to_value<DestinationType>::convert(src_obj, dest);
                             return;
                         }
@@ -1884,11 +1900,11 @@ namespace value_manip {
                 }
 
                 if (!sz_ptr || *sz_ptr < 0) {
-                    const auto src_obj = toUTF8(cstr);
+                    auto src_obj = toUTF8(cstr);
                     ::value_manip::from_value<std::string>::template to_value<DestinationType>::convert(src_obj, dest);
                 }
                 else {
-                    const auto src_obj = toUTF8(cstr, (static_cast<std::size_t>(*sz_ptr) / sizeof(decltype(*cstr))));
+                    auto src_obj = toUTF8(cstr, (static_cast<std::size_t>(*sz_ptr) / sizeof(decltype(*cstr))));
                     ::value_manip::from_value<std::string>::template to_value<DestinationType>::convert(src_obj, dest);
                 }
             }
@@ -1915,7 +1931,7 @@ namespace value_manip {
                     switch (*ind_ptr) {
                         case 0:
                         case SQL_NTS: {
-                            const auto src_obj = toUTF8(cstr);
+                            auto src_obj = toUTF8(cstr);
                             ::value_manip::from_value<std::string>::template to_value<DestinationType>::convert(src_obj, dest);
                             return;
                         }
@@ -1939,11 +1955,11 @@ namespace value_manip {
                 }
 
                 if (!sz_ptr || *sz_ptr < 0) {
-                    const auto src_obj = toUTF8(cstr);
+                    auto src_obj = toUTF8(cstr);
                     ::value_manip::from_value<std::string>::template to_value<DestinationType>::convert(src_obj, dest);
                 }
                 else {
-                    const auto src_obj = toUTF8(cstr, (static_cast<std::size_t>(*sz_ptr) / sizeof(decltype(*cstr))));
+                     auto src_obj = toUTF8(cstr, (static_cast<std::size_t>(*sz_ptr) / sizeof(decltype(*cstr))));
                     ::value_manip::from_value<std::string>::template to_value<DestinationType>::convert(src_obj, dest);
                 }
             }
